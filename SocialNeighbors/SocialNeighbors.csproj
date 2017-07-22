@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GoogleMapsApi, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GoogleMapsApi.0.60.0\lib\net45\GoogleMapsApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -51,6 +55,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Device" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -168,13 +173,25 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\GeoLocationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Controllers\PlayController.cs" />
+    <Compile Include="Controllers\UserDetailsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707220002097_abcd.cs" />
+    <Compile Include="Migrations\201707220002097_abcd.Designer.cs">
+      <DependentUpon>201707220002097_abcd.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\MessagingViewModel.cs" />
+    <Compile Include="Models\PlayViewModel.cs" />
+    <Compile Include="Models\UserDetails.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -183,13 +200,36 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\ElasticCss\component.css" />
+    <Content Include="Content\ElasticCss\demo.css" />
+    <Content Include="Content\ElasticCss\normalize.css" />
+    <Content Include="Content\Images\Avatars\F0.png" />
+    <Content Include="Content\Images\Avatars\F1.png" />
+    <Content Include="Content\Images\Avatars\F2.png" />
+    <Content Include="Content\Images\Avatars\F3.png" />
+    <Content Include="Content\Images\Avatars\F4.png" />
+    <Content Include="Content\Images\Avatars\F5.png" />
+    <Content Include="Content\Images\Avatars\F6.png" />
+    <Content Include="Content\Images\Avatars\M0.png" />
+    <Content Include="Content\Images\Avatars\M1.png" />
+    <Content Include="Content\Images\Avatars\M2.png" />
+    <Content Include="Content\Images\Avatars\M3.png" />
+    <Content Include="Content\Images\Avatars\M4.png" />
+    <Content Include="Content\Images\Avatars\M5.png" />
+    <Content Include="Content\Images\Avatars\M6.png" />
+    <Content Include="Content\Images\FN.ico" />
+    <Content Include="Content\Images\Social.jpg" />
+    <Content Include="Content\Images\Social2.jpg" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\LocationFinder20161129114230.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\draggabilly.pkgd.min.js" />
+    <Content Include="Scripts\elastiStack.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -198,10 +238,13 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\modernizr.custom.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -233,9 +276,22 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Play\Index.cshtml" />
+    <Content Include="Views\UserDetails\Create.cshtml" />
+    <Content Include="Views\UserDetails\Delete.cshtml" />
+    <Content Include="Views\UserDetails\Details.cshtml" />
+    <Content Include="Views\UserDetails\Edit.cshtml" />
+    <Content Include="Views\UserDetails\Index.cshtml" />
+    <Content Include="Views\Messages\Create.cshtml" />
+    <Content Include="Views\Messages\Delete.cshtml" />
+    <Content Include="Views\Messages\Details.cshtml" />
+    <Content Include="Views\Messages\Index.cshtml" />
+    <Content Include="Views\Messages\MessagesPerPerson.cshtml" />
+    <Content Include="Views\Play\Index.mobile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\GeoLocation\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -244,6 +300,11 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201707220002097_abcd.resx">
+      <DependentUpon>201707220002097_abcd.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

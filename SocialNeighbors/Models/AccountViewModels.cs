@@ -93,13 +93,23 @@ namespace SocialNeighbors.Models
         public string Gender { get; set; }
 
         [Required]
+        [Display(Name = "Avatar")]
+        public string Avatar { get; set; }
+
+        [Required]
         [Phone]
         [Display(Name = "Phone")]
         public string Phone { get; set; }
 
         [Required]
-        [Display(Name = "Location")]
-        public string Location { get; set; }
+        [Display(Name = "Address In One Line")]
+        public string Address { get; set; }
+
+
+        [Required]
+        public string Lat { get; set; }
+        [Required]
+        public string Lon { get; set; }
 
         [Required]
         [Display(Name = "Other Info")]

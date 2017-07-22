@@ -1,0 +1,60 @@
+﻿@model IEnumerable<SocialNeighbors.Models.Message>
+
+@{
+    ViewBag.Title = "Messages";
+}
+
+<h2>Messages</h2>
+
+<p>
+    @*@Html.ActionLink("Create New", "Create")*@
+</p>
+<table class="table">
+    <tr>
+        <th>
+            From        @*@Html.DisplayNameFor(model => model.fromUser)*@
+        </th>
+        <th>
+            To          @*@Html.DisplayNameFor(model => model.toUser)*@
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.messageContent)
+        </th>
+        <th>
+            Time
+            @*@Html.DisplayNameFor(model => model.timeStamp)*@
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.isRead)
+        </th>*@
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.fromUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.toUser)
+            </td>
+            <td>
+                @Html.ActionLink(item.messageContent, "MessagesPerPerson_messageID", new { id = item.Id })
+                @*@Html.DisplayFor(modelItem => item.messageContent)*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.timeStamp)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.isRead)
+            </td>*@
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
+                @*@Html.ActionLink("Details", "MessagesPerPerson_messageID", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+            </td>
+        </tr>
+    }
+
+</table>

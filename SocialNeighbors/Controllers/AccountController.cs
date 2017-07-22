@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -9,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using SocialNeighbors.Models;
+
 
 namespace SocialNeighbors.Controllers
 {
@@ -154,9 +152,12 @@ namespace SocialNeighbors.Controllers
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
-                user.Location = model.Location;
+                user.Lat = model.Lat;
+                user.Lon = model.Lon;
                 user.Phone = model.Phone;
                 user.Comments = model.Comments;
+                user.Avatar = model.Avatar;
+                user.Gender = model.Gender;
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -408,6 +409,12 @@ namespace SocialNeighbors.Controllers
         {
             return View();
         }
+
+
+
+
+
+
 
         protected override void Dispose(bool disposing)
         {

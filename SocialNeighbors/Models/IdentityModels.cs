@@ -24,8 +24,11 @@ namespace SocialNeighbors.Models
         public string Phone { get; set; }
 
         //[Required]
-        public string Location { get; set; }
+        public string Lat { get; set; }
 
+        public string Lon { get; set; }
+
+        public string Avatar { get; set; }
         //[Required]
         public string Comments { get; set; }
 
@@ -49,5 +52,9 @@ namespace SocialNeighbors.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<SocialNeighbors.Models.UserDetails> UserDetails { get; set; }
+
+        public System.Data.Entity.DbSet<SocialNeighbors.Models.Message> Messages { get; set; }
     }
 }

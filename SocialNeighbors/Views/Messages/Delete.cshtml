@@ -1,0 +1,64 @@
+﻿@model SocialNeighbors.Models.Message
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Message</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.fromUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fromUser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.toUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.toUser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.messageContent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.messageContent)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.timeStamp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.timeStamp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.isRead)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.isRead)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

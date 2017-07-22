@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="Shortcut Icon" href="/Content/Images/FN.ico" type="image/x-icon" />
     @{ 
         ViewBag.Title = "Social Neighbors";
     }
@@ -29,9 +29,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Play", "Index", "Play")</li>
+                    <li>@Html.ActionLink("Messages", "Index", "Messages")</li>
+                    @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
+                    @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

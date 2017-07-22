@@ -1,0 +1,58 @@
+﻿@model SocialNeighbors.Models.Message
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Message</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.fromUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fromUser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.toUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.toUser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.messageContent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.messageContent)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.timeStamp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.timeStamp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.isRead)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.isRead)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

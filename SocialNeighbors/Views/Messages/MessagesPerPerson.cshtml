@@ -1,0 +1,201 @@
+﻿@model SocialNeighbors.Models.MessagingViewModel
+
+@{
+    ViewBag.Title = "Messages";
+}
+
+<h2>Messages</h2>
+
+<textarea id="txtAreaMessage" class="form-control" rows="5"></textarea>
+<button id="btnMessage" class="btn btn-primary">Message</button>
+<input type="text" id="neighborId" style="display:none" value="@Model.neighbor.Email" />
+
+<div id="MessageContainer">
+    @foreach (var item in Model.messages)
+    {
+
+        <div class="row">
+            <br />
+            <br />
+            @if (User.Identity.Name.ToUpper() == item.fromUser.ToUpper())
+            {
+                <div style="border:solid" class="col-md-5">
+                    <img src="@Model.me.Avatar" style="width: 20px;" />
+                    <strong>@item.fromUser</strong><br />
+                    @Html.DisplayFor(modelItem => item.messageContent)<span style="font-size:xx-small">@Html.DisplayFor(modelItem => item.timeStamp)</span>
+                </div>
+            }
+            else
+            {
+                <div style="border:solid; background-color:indigo" class="col-md-5 col-md-offset-4">
+                    <img src="@Model.neighbor.Avatar" style="width: 20px;" />
+                    <strong>@item.fromUser</strong><br />
+                    @Html.DisplayFor(modelItem => item.messageContent)<span style="font-size:xx-small">@Html.DisplayFor(modelItem => item.timeStamp)</span>
+                </div>
+            }
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        </div>
+    }
+</div>
+<script id="meChatTemplate" type="text/x-custom-template">
+    <div class="row">
+        <br>
+        <br>
+        <div style="border:solid" class="col-md-5">
+            <img src="*Avatar*" style="width: 20px;">
+            <strong>*fromUser*</strong><br>
+            *messageContent*<span style="font-size:xx-small">*timeStamp*</span>
+        </div>
+        <a onclick="return deleteMessage(*Id*)" href="/Messages/Delete/*Id*">Delete</a>
+    </div>
+</script>
+<script id="neighborChatTemplate" type="text/x-custom-template">
+    <br>
+    <br>
+    <div class="row">
+        <div style="border:solid; background-color:indigo" class="col-md-5 col-md-offset-4">
+            <img src="*Avatar*" style="width: 20px;">
+            <strong>*fromUser*</strong><br>
+            *messageContent*<span style="font-size:xx-small">*timeStamp*</span>
+        </div>
+        <a onclick="return deleteMessage('*Id*')" href="/Messages/Delete/*Id*">Delete</a>
+    </div>
+</script>
+
+<script>
+    window.onload = function () {
+        var myVar = setInterval(MessageListner, 2000);
+
+        function MessageListner() {
+            showAllMessages();
+        }
+
+        $("#btnMessage").click(
+            function () {
+                saveAndClearMessage();
+                showAllMessages();
+            }
+            );
+
+        $('#txtAreaMessage').keyup(function (e) {
+            if (e.keyCode == 13) {
+                saveAndClearMessage();
+                showAllMessages();
+            }
+        });
+
+    }
+    function saveAndClearMessage() {
+        var message = {
+            Id: '',
+            fromUser: '',
+            toUser: $("#neighborId").val(),
+            messageContent: $("#txtAreaMessage").val(),
+            timeStamp: '',
+            isRead: '',
+        };
+
+
+        $.ajax({
+            url: "/Messages/Create_Ajax/"
+               , dataType: 'json'
+               , contentType: 'application/json'
+            // in MVC you would pass in your query string or form
+            // parameters into the data property
+               , data: JSON.stringify(message)
+               , method: 'POST'
+        }).done(
+                    function () { $("#txtAreaMessage").val(""); showAllMessages(); }
+                )
+                .error(
+                function (xhr, status, error) {
+                    // deal with error from server
+                    //$("#error").show();
+                    console.log("error function called");
+                });
+
+        console.log("saveAndClear Called");
+    }
+    function showAllMessages() {
+        console.log("showMessages Called");
+
+        $.ajax({
+            url: "/Messages/MessagesPerPerson_ajax/"
+      , dataType: 'json'
+      , contentType: 'application/json'
+            , data: { neighborEmailId: $("#neighborId").val() }
+            // in MVC you would pass in your query string or form
+            // parameters into the data property
+      , method: 'GET'
+        })
+      .done(
+      function (responseJSON, status, xhr) {
+          // clear the div
+          $("#MessageContainer").text("");
+
+          // process the response
+          $.each(responseJSON.messages, function (index, messageobj) {
+              var meChatTemplate = $("#meChatTemplate").html();
+              var neighborChatTemplate = $("#neighborChatTemplate").html();
+              if ($("#neighborId").val() != messageobj.fromUser) {
+                  meChatTemplate = meChatTemplate.replace('*Id*', messageobj.Id);
+                  meChatTemplate = meChatTemplate.replace('*fromUser*', messageobj.fromUser);
+                  meChatTemplate = meChatTemplate.replace('*Avatar*', responseJSON.me.Avatar);
+                  meChatTemplate = meChatTemplate.replace('*toUser*', messageobj.toUser);
+                  meChatTemplate = meChatTemplate.replace('*messageContent*', messageobj.messageContent);
+
+                  var options = {
+                      weekday: "long", year: "numeric", month: "short",
+                      day: "numeric", hour: "2-digit", minute: "2-digit"
+                  };
+                  var timevar = messageobj.timeStamp.replace(/[^0-9 +]/g, '');
+                  var myDate = new Date(parseInt(timevar));
+
+                  meChatTemplate = meChatTemplate.replace('*timeStamp*', myDate.toLocaleDateString("en-us", options));
+                  meChatTemplate = meChatTemplate.replace('*fromUser*', messageobj.fromUser);
+
+                  $("#MessageContainer").append(meChatTemplate);
+              }
+              else {
+                  neighborChatTemplate = neighborChatTemplate.replace('*Id*', messageobj.Id);
+                  neighborChatTemplate = neighborChatTemplate.replace('*fromUser*', messageobj.fromUser);
+                  neighborChatTemplate = neighborChatTemplate.replace('*Avatar*', responseJSON.neighbor.Avatar);
+                  neighborChatTemplate = neighborChatTemplate.replace('*toUser*', messageobj.toUser);
+                  neighborChatTemplate = neighborChatTemplate.replace('*messageContent*', messageobj.messageContent);
+
+                  var options = {
+                      weekday: "long", year: "numeric", month: "short",
+                      day: "numeric", hour: "2-digit", minute: "2-digit"
+                  };
+                  var timevar = messageobj.timeStamp.replace(/[^0-9 +]/g, '');
+                  var myDate = new Date(parseInt(timevar));
+
+                  neighborChatTemplate = neighborChatTemplate.replace('*timeStamp*', myDate.toLocaleDateString("en-us", options));
+
+                  //neighborChatTemplate = neighborChatTemplate.replace('*timeStamp*', messageobj.timeStamp);
+                  neighborChatTemplate = neighborChatTemplate.replace('*fromUser*', messageobj.fromUser);
+
+                  $("#MessageContainer").append(neighborChatTemplate);
+              }
+          });
+          console.log("done function called");
+      })
+      .error(
+      function (xhr, status, error) {
+          // deal with error from server
+          //$("#error").show();
+          console.log("error function called");
+      });
+    }
+    function deleteMessage(ID)
+    {
+        $.ajax({
+            url: "/Messages/Delete/"
+            // in MVC you would pass in your query string or form
+            // parameters into the data property
+          , data: { Id : ID }
+          , type: 'POST'
+        })
+        return false;
+    }
+</script>

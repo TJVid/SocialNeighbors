@@ -1,0 +1,51 @@
+﻿@model SocialNeighbors.Models.PlayViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<script src="/Scripts/modernizr.custom.js"></script>
+<link rel="stylesheet" type="text/css" href="/Content/ElasticCss/component.css">
+<link rel="stylesheet" type="text/css" href="/Content/ElasticCss//normalize.css">
+
+
+<h2>Play the Game of Neighbors</h2>
+
+<p>Welcome <strong> @Model.currentUser.user.LastName @Model.currentUser.user.FirstName</strong>,</p>
+<p>
+    Below is the list of people matching in your neighborhood.
+    Some are not from this address but are right now nearby.
+</p>
+
+@*<img src="@Model.currentUser.user.Avatar" style="" />*@
+
+<br />
+<br />
+<ul>
+    @foreach (var neighbor in @Model.nearbyUsers)
+    {
+        <li style="background: black">
+            <h4>@neighbor.FirstName @neighbor.LastName</h4>
+            <span class="row">
+                <span class="col-md-2">Gender:</span>
+                <span class="col-md-2">@neighbor.Gender</span>
+            </span>
+
+            <span class="row">
+                @*<span class="col-md-2">Other Information</span>*@
+                <span class="col-md-12">@neighbor.Comments</span>
+            </span>
+
+            <span class="row">
+                <img class="img-circle col-md-offset-4" style="width:120px;" src="@neighbor.Avatar" />
+            </span>
+            @*<button id="btnChat">Message</button>*@
+            @Html.ActionLink("Message", actionName: "MessagesPerPerson",controllerName:"Messages", routeValues: new { UserId = neighbor.Id}, htmlAttributes: new { @class = "btn btn-primary", @style = "color:white" })
+        </li>
+    }
+</ul>
+
+<script src="/Scripts/draggabilly.pkgd.min.js"></script>
+<script src="/Scripts/elastiStack.js"></script>
+<script>
+    new ElastiStack(document.getElementById('elasticstack'));
+</script>
